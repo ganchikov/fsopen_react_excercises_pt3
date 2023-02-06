@@ -1,0 +1,19 @@
+http://localhost:3001/api/info
+
+###
+
+http://localhost:3001/api/persons
+
+###
+
+DELETE http://localhost:3001/api/persons/68691
+
+###
+
+POST http://localhost:3001/api/persons/ HTTP/1.1
+content-type: application/json
+
+{
+    "name": "CAA",
+    "number": 123
+}
