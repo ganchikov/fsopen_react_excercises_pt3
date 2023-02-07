@@ -1,7 +1,19 @@
-const { json } = require('express')
 const express = require('express')
+const morgan = require('morgan')
+
 const app = express()
 app.use(express.json())
+
+morgan.token('payload', (req, res) => 
+  { 
+      if (req.method === 'POST')
+        return JSON.stringify(req.body)
+  })
+
+
+
+app.use(morgan(':method :url :status :response-time ms :payload'))
+
 const PORT = 3001
 const data = [
     { 
@@ -27,17 +39,14 @@ const data = [
 ]
 
 app.get('/', (req, res) => {
-    console.log('/ GET request processed')
     res.send('<h1>Hello World</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
-    console.log('/api/persons GET request processed')
     res.json(data)
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  console.log(`/api/persons GET request processed for id ${req.params.id}`)
   const id = Number(req.params.id)
   const data_entry = data.find(itm => itm.id === id)
   if (!data_entry) {
@@ -48,7 +57,6 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-  console.log('/api/persons POST request processed')
   const data_entry = req.body
 
   if (!data_entry) {
@@ -77,7 +85,6 @@ app.post('/api/persons', (req, res) => {
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  console.log(`/api/persons DELETE request processed for id ${req.params.id}`)
   const id = Number(req.params.id)
   const index = data.findIndex(itm => itm.id === id)
   if (index === -1) {
@@ -89,7 +96,6 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.get('/api/info', (req, res) => {
-    console.log('/api/info GET request processed')
     res.send(`Phonebook has info for ${data.length} people <br/>${new Date()}`)
 })
 
