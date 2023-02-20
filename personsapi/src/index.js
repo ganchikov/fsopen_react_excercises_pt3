@@ -11,7 +11,7 @@ morgan.token('payload', (req, res) =>
   })
 
 
-
+app.use(express.static('build'))
 app.use(morgan(':method :url :status :response-time ms :payload'))
 
 const PORT = 3001
